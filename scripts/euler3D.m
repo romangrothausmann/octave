@@ -7,6 +7,7 @@ addpath ("~/octave/imMinkowski/");
 arg_list = argv ();
 if nargin != 1
   fprintf(stderr, "Usage: %s <input3D.tif>\n", program_name);
+  fprintf(stderr, "Octave can even load (ITK) compressed TIFs!\n", program_name);
   exit(1)
 else
   fprintf(stderr, "Reading 3D data from %s...\n", arg_list{1});
