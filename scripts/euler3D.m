@@ -16,7 +16,7 @@ else
   #   if (arg_list{2} == "-q")
   #     quiet= 1;
   #   endif
-  # endif 
+  # endif
 endif
 
 #printf("dim= %d\n", ndims(i3d))
