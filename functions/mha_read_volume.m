@@ -23,7 +23,7 @@ switch(lower(info.DataFile))
 end
         
 % Open file
-switch(info.ByteOrder(1))
+switch(info.ByteOrder)
     case ('true')
         fid=fopen(info.Filename,'rb','ieee-be');
     otherwise
