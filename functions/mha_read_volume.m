@@ -85,16 +85,11 @@ b= javaObject('java.util.zip.InflaterInputStream', a);
 c= javaObject('java.io.ByteArrayOutputStream');
 
 ##BEGIN: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier copyStream(b,c);
-buffer= javaArray('java.lang.Byte',4096)
-len= javaObject('java.lang.Integer', 0);
-off= javaObject('java.lang.Integer', 0);
-max= javaObject('java.lang.Integer', 4096);
 bc=0;
-#while ((len = b.read(buffer)) != -1)#NoSuchMethodException
-#while ((len = javaMethod('read','java.util.zip.InflaterInputStream',buffer)) != -1)
-while ((len = b.read(buffer,off,max)) != -1)#NoSuchMethodException
-  c.write(buffer, 0, len);
-  bc+=len;
+n= javaObject('java.lang.Integer', 0);#n does not have to be a jInt; quicker?
+while ((n = b.read()) >= 0)
+  c.write(n);
+  bc++;
   fprintf(stderr, "\rread %d Bytes", bc);
 end
 ##END: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier
@@ -103,5 +98,9 @@ fprintf(stderr, "read %d Bytes\n", bc);
 c.close();
 b.close();
 a.close();
-M=typecast(c.toByteArray,DataType);
+#M=typecast(c.toByteArray,DataType);#octave does not convert jByteArray
+jIntArray = javaArray('java.lang.Integer', 1);
+jIntArray= c.toByteArray;#does not convert the jByteArray to a jIntArray
+M=typecast(jIntArray,DataType);#octave does convert jIntArray
+# tmp = javaObject('org.octave.Matrix', c.toByteArray);#does not convert jByteArray either
 
