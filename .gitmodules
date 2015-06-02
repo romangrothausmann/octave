@@ -1,0 +1,3 @@
+[submodule "matImage"]
+	path = matImage
+	url = https://github.com/dlegland/matImage
