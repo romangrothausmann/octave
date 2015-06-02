@@ -72,24 +72,34 @@ switch(info.CompressedData(1))
             case 'float', DataType='single';
             case 'double', DataType='double';
         end
-        V = zlib_decompress(info.Filename,info.HeaderSize,DataType);
+        V = zlib_decompress(info.Filename,info.HeaderSize,DataType,info.ByteOrder(1));
 
 end
 fclose(fid);
 V = reshape(V,info.Dimensions);
 
-function M = zlib_decompress(fname,hsize,DataType)
+function M = zlib_decompress(fname,hsize,DataType,BO)
 a= javaObject('java.io.FileInputStream', fname);#replacement for java.io.ByteArrayInputStream(Z);
 a.skip(hsize);
 b= javaObject('java.util.zip.InflaterInputStream', a);
 
 ##BEGIN: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier copyStream(b,c);
-M=[]; #avoiding jByteArray, works, but very slow
+ba=uint8([]); #avoiding jByteArray, works, but very slow
 while ((n = b.read()) >= 0)
-  M(end+1)= n;
+  ba(end+1)= n;
 end
 ##END: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier
 
 b.close();
 a.close();
 
+if(BO == 't')
+  if(DataType == 'single')
+    ba=swapbytes(typecast(ba,'uint32'));#workaround for swapbytes(single())
+    M=typecast(ba,DataType);
+  else
+    M=swapbytes(typecast(ba,DataType));
+  endif
+else
+  M=typecast(ba,DataType);
+endif
