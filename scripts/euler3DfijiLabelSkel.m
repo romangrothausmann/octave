@@ -8,12 +8,12 @@ pkg load image
 
 arg_list = argv ();
 if nargin != 1
-  fprintf(stderr, "Usage: %s <fiji_labeled-skel.tif>\n", program_name);
-  fprintf(stderr, "Octave can even load (ITK) compressed TIFs!\n", program_name);
+  fprintf(stderr, "Usage: %s <fiji_labeled-skel.mha>\n", program_name);
+  fprintf(stderr, "Decompressing MHAs/MHDs is very slow!\n");
   exit(1)
 else
   fprintf(stderr, "Reading 3D data from %s...\n", arg_list{1});
-  i3d= squeeze(imread (arg_list{1}, "Index", "all")); #expects binary image if first slice has no values above 1!
+  i3d= mha_read_volume(arg_list{1});#from ~/octave/functions/
   # if nargin == 2
   #   if (arg_list{2} == "-q")
   #     quiet= 1;
@@ -21,7 +21,7 @@ else
   # endif
 endif
 
-info= imfinfo (arg_list{1})
+info= mha_read_header(arg_list{1})
 info.BitDepth
 
 #[i,j,v]=find(i3d); #find non-zero values

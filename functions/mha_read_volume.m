@@ -82,25 +82,14 @@ function M = zlib_decompress(fname,hsize,DataType)
 a= javaObject('java.io.FileInputStream', fname);#replacement for java.io.ByteArrayInputStream(Z);
 a.skip(hsize);
 b= javaObject('java.util.zip.InflaterInputStream', a);
-c= javaObject('java.io.ByteArrayOutputStream');
 
 ##BEGIN: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier copyStream(b,c);
-bc=0;
-n= javaObject('java.lang.Integer', 0);#n does not have to be a jInt; quicker?
+M=[]; #avoiding jByteArray, works, but very slow
 while ((n = b.read()) >= 0)
-  c.write(n);
-  bc++;
-  fprintf(stderr, "\rread %d Bytes", bc);
+  M(end+1)= n;
 end
 ##END: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier
 
-fprintf(stderr, "read %d Bytes\n", bc);
-c.close();
 b.close();
 a.close();
-#M=typecast(c.toByteArray,DataType);#octave does not convert jByteArray
-jIntArray = javaArray('java.lang.Integer', 1);
-jIntArray= c.toByteArray;#does not convert the jByteArray to a jIntArray
-M=typecast(jIntArray,DataType);#octave does convert jIntArray
-# tmp = javaObject('org.octave.Matrix', c.toByteArray);#does not convert jByteArray either
 
