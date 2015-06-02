@@ -94,7 +94,7 @@ b.close();
 a.close();
 
 if(BO == 't')
-  if(DataType == 'single')
+  if(strcmp(DataType,'single'))
     ba=swapbytes(typecast(ba,'uint32'));#workaround for swapbytes(single())
     M=typecast(ba,DataType);
   else
