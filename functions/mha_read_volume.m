@@ -1,6 +1,8 @@
 function V = mha_read_volume(info)
 % Function for reading the volume of a Insight Meta-Image (.mha, .mhd) file
 % 
+% from: http://www.mathworks.com/matlabcentral/fileexchange/29344-read-medical-data-3d/content//mha/mha_read_volume.m
+% for zlib compression with java see e.g. http://www.mathworks.com/matlabcentral/fileexchange/8899-rapid-lossless-data-compression-of-numerical-or-string-variables/content//dunzip.m
 % volume = tk_read_volume(file-header)
 %
 % examples:
@@ -23,9 +25,9 @@ end
 % Open file
 switch(info.ByteOrder(1))
     case ('true')
-        fid=fopen(info.Filename','rb','ieee-be');
+        fid=fopen(info.Filename,'rb','ieee-be');
     otherwise
-        fid=fopen(info.Filename','rb','ieee-le');
+        fid=fopen(info.Filename,'rb','ieee-le');
 end
 
 switch(lower(info.DataFile))
@@ -70,19 +72,36 @@ switch(info.CompressedData(1))
             case 'float', DataType='single';
             case 'double', DataType='double';
         end
-        Z  = fread(fid,inf,'uchar=>uint8');
-        V = zlib_decompress(Z,DataType);
+        V = zlib_decompress(info.Filename,info.HeaderSize,DataType);
 
 end
 fclose(fid);
 V = reshape(V,info.Dimensions);
 
-function M = zlib_decompress(Z,DataType)
-import com.mathworks.mlwidgets.io.InterruptibleStreamCopier
-a=java.io.ByteArrayInputStream(Z);
-b=java.util.zip.InflaterInputStream(a);
-isc = InterruptibleStreamCopier.getInterruptibleStreamCopier;
-c = java.io.ByteArrayOutputStream;
-isc.copyStream(b,c);
+function M = zlib_decompress(fname,hsize,DataType)
+a= javaObject('java.io.FileInputStream', fname);#replacement for java.io.ByteArrayInputStream(Z);
+a.skip(hsize);
+b= javaObject('java.util.zip.InflaterInputStream', a);
+c= javaObject('java.io.ByteArrayOutputStream');
+
+##BEGIN: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier copyStream(b,c);
+buffer= javaArray('java.lang.Byte',4096)
+len= javaObject('java.lang.Integer', 0);
+off= javaObject('java.lang.Integer', 0);
+max= javaObject('java.lang.Integer', 4096);
+bc=0;
+#while ((len = b.read(buffer)) != -1)#NoSuchMethodException
+#while ((len = javaMethod('read','java.util.zip.InflaterInputStream',buffer)) != -1)
+while ((len = b.read(buffer,off,max)) != -1)#NoSuchMethodException
+  c.write(buffer, 0, len);
+  bc+=len;
+  fprintf(stderr, "\rread %d Bytes", bc);
+end
+##END: replacement for com.mathworks.mlwidgets.io.InterruptibleStreamCopier
+
+fprintf(stderr, "read %d Bytes\n", bc);
+c.close();
+b.close();
+a.close();
 M=typecast(c.toByteArray,DataType);
 

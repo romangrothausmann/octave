@@ -1,6 +1,8 @@
 function info =mha_read_header(filename)
 % Function for reading the header of a Insight Meta-Image (.mha,.mhd) file
 % 
+% from: http://www.mathworks.com/matlabcentral/fileexchange/29344-read-medical-data-3d/content//mha/mha_read_header.m
+% 
 % info  = mha_read_header(filename);
 %
 % examples:
