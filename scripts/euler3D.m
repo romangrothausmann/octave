@@ -10,8 +10,9 @@ if nargin != 1
   fprintf(stderr, "Decompressing MHAs/MHDs is very slow!\n");
   exit(1)
 else
-  fprintf(stderr, "Reading 3D data from %s...\n", arg_list{1});
+  fprintf(stderr, "Reading 3D data from %s...", arg_list{1});
   i3d= mha_read_volume(arg_list{1});#from ~/octave/functions/
+  fprintf(stderr, " done.\n", arg_list{1});
   # if nargin == 2
   #   if (arg_list{2} == "-q")
   #     quiet= 1;
@@ -20,8 +21,8 @@ else
 endif
 
 #printf("dim= %d\n", ndims(i3d))
-printf("EPC(6)= %d\n", imEuler3d(i3d, 6))
 printf("EPC(26)= %d\n", imEuler3d(i3d, 26))
+#printf("EPC(6)= %d\n", imEuler3d(i3d, 6))
 
 
 
