@@ -38,28 +38,30 @@ switch(lower(info.DataFile))
         fseek(fid,0,'bof');
 end
 
-datasize=prod(info.Dimensions)*info.BitDepth/8;
-
 switch(info.CompressedData(1))
     case 'f'
         % Read the Data
         switch(info.DataType)
             case 'char'
-                 V = int8(fread(fid,datasize,'char')); 
+              V = fread(fid,'*int8'); 
             case 'uchar'
-                V = uint8(fread(fid,datasize,'uchar')); 
+              V = fread(fid,'*uint8'); 
             case 'short'
-                V = int16(fread(fid,datasize,'short')); 
+              V = fread(fid,'*int16'); 
             case 'ushort'
-                V = uint16(fread(fid,datasize,'ushort')); 
+              V = fread(fid,'*uint16'); 
             case 'int'
-                 V = int32(fread(fid,datasize,'int')); 
+              V = fread(fid,'*int32'); 
             case 'uint'
-                 V = uint32(fread(fid,datasize,'uint')); 
+              V = fread(fid,'*uint32'); 
+            case 'long'
+              V = fread(fid,'*int64'); 
+            case 'ulong'
+              V = fread(fid,'*uint64'); 
             case 'float'
-                 V = single(fread(fid,datasize,'float'));   
+              V = fread(fid,'*float32');   
             case 'double'
-                V = double(fread(fid,datasize,'double'));
+              V = fread(fid,'*float64');
         end
     case 't'
         switch(info.DataType)
@@ -69,6 +71,8 @@ switch(info.CompressedData(1))
             case 'ushort', DataType='uint16';
             case 'int', DataType='int32';
             case 'uint', DataType='uint32';
+            case 'long', DataType='int64';
+            case 'ulong', DataType='uint64';
             case 'float', DataType='single';
             case 'double', DataType='double';
         end
