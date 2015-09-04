@@ -10,9 +10,10 @@ if nargin != 1
   fprintf(stderr, "Decompressing MHAs/MHDs is very slow!\n");
   exit(1)
 else
-  fprintf(stderr, "Reading 3D data from %s...", arg_list{1});
+  fprintf(stderr, "Reading 3D data from %s ...", arg_list{1});
   i3d= mha_read_volume(arg_list{1});#from ~/octave/functions/
   fprintf(stderr, " done.\n", arg_list{1});
+  printf("Image size: %d %d %d\n", size(i3d))
   # if nargin == 2
   #   if (arg_list{2} == "-q")
   #     quiet= 1;
