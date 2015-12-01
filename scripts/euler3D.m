@@ -21,6 +21,13 @@ else
   # endif
 endif
 
+##pad with zero in all directions, could use padarray from pkg image
+##commented, as this doubles the memory peak, better done by ITK
+# i3d_padded= zeros(size(i3d)+2);
+# i3d_padded(2:end-1,2:end-1,2:end-1)= i3d;
+# i3d= i3d_padded;
+# printf("Image size: %d %d %d (after padding with 0)\n", size(i3d))
+
 #printf("dim= %d\n", ndims(i3d))
 printf("EPC(26)= %d\n", imEuler3d(i3d, 26))
 #printf("EPC(6)= %d\n", imEuler3d(i3d, 6))
