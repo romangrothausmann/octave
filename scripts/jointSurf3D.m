@@ -40,7 +40,7 @@ fprintf(stderr, "Image value range: %d to %d\n", ll, ul);
 
 printf("PairId\tL1\tL2\tjointSurf\n")
 
-for i= ll:ul
+for i= ll:ul-1
   if isempty(find(i3d == i, 1)) #check if label value actually exists in i3d
     fprintf(stderr, "%d not found, skipping.\n", i);
     continue

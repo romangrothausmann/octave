@@ -15,13 +15,17 @@ else
   fprintf(stderr, "ElementSize: %f, %f, %f\n", i3dInfo.PixelDimensions);
   i3d= mha_read_volume(i3dInfo);#from ~/octave/functions/
   fprintf(stderr, "Reading done.\n", arg_list{1});
-  printf("Image size: %d %d %d\n", size(i3d))
+  fprintf(stderr, "Image size: %d %d %d\n", size(i3d))
   # if nargin == 2
   #   if (arg_list{2} == "-q")
   #     quiet= 1;
   #   endif
   # endif
 endif
+
+if ndims(i3d) ~= 3
+  error('Image has to be 3D!');
+end
 
 arg1= str2num(arg_list{2})
 
