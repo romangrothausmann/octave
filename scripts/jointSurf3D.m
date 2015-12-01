@@ -5,8 +5,8 @@
 addpath ("~/octave/imMinkowski/");
 
 arg_list = argv ();
-if nargin != 1
-  fprintf(stderr, "Usage: %s <input3D.mha> \n", program_name);
+if nargin != 3
+  fprintf(stderr, "Usage: %s <input3D.mha> label1 label2 \n", program_name);
   fprintf(stderr, "Decompressing MHAs/MHDs is very slow!\n");
   exit(1)
 else
@@ -23,8 +23,10 @@ else
   # endif
 endif
 
+l1= str2num(arg_list{2})
+l2= str2num(arg_list{3})
 
-printf("...= %f\n", imFunction(i3d, ))
+printf("jointSurface(13): %f\n", imJointSurface(i3d, l1, l2, 13, i3dInfo.PixelDimensions'))
 
 
 

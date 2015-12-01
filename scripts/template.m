@@ -5,8 +5,8 @@
 addpath ("~/octave/imMinkowski/");
 
 arg_list = argv ();
-if nargin != 1
-  fprintf(stderr, "Usage: %s <input3D.mha> \n", program_name);
+if nargin != 2
+  fprintf(stderr, "Usage: %s <input3D.mha> arg1 \n", program_name);
   fprintf(stderr, "Decompressing MHAs/MHDs is very slow!\n");
   exit(1)
 else
@@ -23,8 +23,9 @@ else
   # endif
 endif
 
+arg1= str2num(arg_list{2})
 
-printf("...= %f\n", imFunction(i3d, ))
+printf("res: %f\n", imFunction(i3d, ))
 
 
 
