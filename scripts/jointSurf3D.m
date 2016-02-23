@@ -54,7 +54,7 @@ for i= ll:ul-1
       continue
     endif
 
-    printf("%d\t%d\t%d\t%f\n", CantorPairing(i, j), i, j, imJointSurface(i3d, i, j, 13, i3dInfo.PixelDimensions'))
+    printf("%d\t%d\t%d\t%f\n", CantorPairing(i, j), i, j, imJointSurface(i3d, i, j, 13, i3dInfo.PixelDimensions))
   end
 end
 
