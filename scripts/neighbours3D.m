@@ -5,7 +5,7 @@
 ####ToDo
 ## check only once if label actually exists and store result for use in j-loop
 
-addpath ("~/octave/imMinkowski/");
+addpath ("~/octave/imMeasures/");
 
 function pairId = CantorPairing(x, y)
   pairId= (x+y)*(x+y+1)/2 + y;
@@ -38,25 +38,12 @@ ll= min(min(min(i3d)));
 ul= max(max(max(i3d)));
 fprintf(stderr, "Image value range: %d to %d\n", ll, ul);
 
-printf("PairId\tL1\tL2\tjointSurf\n")
 
-for i= ll:ul-1
-  if isempty(find(i3d == i, 1)) #check if label value actually exists in i3d
-    fprintf(stderr, "%d not found, skipping.\n", i);
-    continue
-  endif
+printf("L1\tL2\n")
 
-  fprintf(stderr, "Evaluating adjacencies of label %d...\n", i);
-       
-  for j= i+1:ul
-    if isempty(find(i3d == j, 1)) #check if label value actually exists in i3d
-      fprintf(stderr, "%d not found, skipping.\n", i);
-      continue
-    endif
+n= imRAG(i3d);
+printf("%d\t%d\n", n')
 
-    printf("%d\t%d\t%d\t%f\n", CantorPairing(i, j), i, j, imJointSurface(i3d, i, j, 13, i3dInfo.PixelDimensions))
-  end
-end
-
-
-
+## print neighbours of specific label i:
+# i= 7
+# n( n(:,1) == i, 2)
