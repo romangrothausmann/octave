@@ -8,7 +8,8 @@
 addpath ("~/octave/imMeasures/");
 
 function pairId = CantorPairing(x, y)
-  pairId= (x+y)*(x+y+1)/2 + y;
+  x= uint64(x);  y= uint64(y); # https://www.gnu.org/software/octave/doc/interpreter/Integer-Arithmetic.html#Integer-Arithmetic
+  pairId= (x+y).*(x+y+1)./2 + y; # .* and ./ to work with vector input
 endfunction    
 
 arg_list = argv ();
@@ -36,10 +37,8 @@ fprintf(stderr, "Image value range: %d to %d\n", ll, ul);
 n= imRAG(i3d);
 
 if nargin == 2 # print neighbours of specific label i
-  i= str2double(arg_list{2});
-  m= n(n(:,1) == i, 2);
-  printf("%d\n", m)
-else
-  printf("L1\tL2\n")
-  printf("%d\t%d\n", n')
+  i= str2double(arg_list{2}); # should work upto flintmax("double")
+  n= n(n(:,1) == i,:);
 endif
+printf("L1\tL2\tPairId\n")
+printf("%d\t%d\t%d\n", horzcat(uint64(n), CantorPairing(n(:,1), n(:,2)))') # without uint64(n), concat as uint16
