@@ -34,7 +34,14 @@ ll= min(min(min(i3d)));
 ul= max(max(max(i3d)));
 fprintf(stderr, "Image value range: %d to %d\n", ll, ul);
 
-n= imRAG(i3d);
+n= imRAG(i3d); # excludes 0, gap= 1 pixel by default, only contains unique pairs, i.e. 1 2 but not 2 1
+l= unique(n); # list of all appearing labels
+
+## construct list: label, adj label, i.e. 1 2 and 2 1
+a= n;
+for j = 1:length(l)
+  n= [n; a(a(:,2) == l(j), [2 1])]; # append rows whose second value equals l(i), swapped https://stackoverflow.com/a/4940630
+end
 
 if nargin == 2 # print neighbours of specific label i
   i= str2double(arg_list{2}); # should work upto flintmax("double")
