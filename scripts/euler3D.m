@@ -2,7 +2,9 @@
 ##script to execute imEuler3d from http://in.mathworks.com/matlabcentral/fileexchange/33690-geometric-measures-in-2d-3d-images
 
 
-addpath ("~/octave/imMinkowski/");
+file_path = fileparts(mfilename('fullpath')); # https://stackoverflow.com/questions/50151829/how-do-i-get-the-current-script-path-in-gnu-octave#50151830
+addpath([file_path "/../functions/"]); # https://octave.org/doc/v4.4.0/Concatenating-Strings.html
+addpath([file_path "/../functions/imMinkowski/"]);
 
 arg_list = argv ();
 if nargin != 1
@@ -11,7 +13,7 @@ if nargin != 1
   exit(1)
 else
   fprintf(stderr, "Reading 3D data from %s ...", arg_list{1});
-  i3d= mha_read_volume(arg_list{1});#from ~/octave/functions/
+  i3d= mha_read_volume(arg_list{1});#from ../functions/
   fprintf(stderr, " done.\n", arg_list{1});
   printf("Image size: %d %d %d\n", size(i3d))
   # if nargin == 2

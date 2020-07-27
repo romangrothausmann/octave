@@ -5,7 +5,9 @@
 ####ToDo
 ## check only once if label actually exists and store result for use in j-loop
 
-addpath ("~/octave/imMinkowski/");
+file_path = fileparts(mfilename('fullpath')); # https://stackoverflow.com/questions/50151829/how-do-i-get-the-current-script-path-in-gnu-octave#50151830
+addpath([file_path "/../functions/"]); # https://octave.org/doc/v4.4.0/Concatenating-Strings.html
+addpath([file_path "/../functions/imMinkowski/"]);
 
 function pairId = CantorPairing(x, y)
   pairId= (x+y)*(x+y+1)/2 + y;
@@ -18,9 +20,9 @@ if nargin != 1
   exit(1)
 else
   fprintf(stderr, "Reading 3D data from %s ...\n", arg_list{1});
-  i3dInfo= mha_read_header(arg_list{1});#from ~/octave/functions/
+  i3dInfo= mha_read_header(arg_list{1});#from ../functions/
   fprintf(stderr, "ElementSize: %f, %f, %f\n", i3dInfo.PixelDimensions);
-  i3d= mha_read_volume(i3dInfo);#from ~/octave/functions/
+  i3d= mha_read_volume(i3dInfo);#from ../functions/
   fprintf(stderr, "Reading done.\n", arg_list{1});
   fprintf(stderr, "Image size: %d %d %d\n", size(i3d))
   # if nargin == 2
